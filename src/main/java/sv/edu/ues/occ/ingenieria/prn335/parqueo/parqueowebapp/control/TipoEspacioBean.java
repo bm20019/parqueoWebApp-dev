@@ -18,4 +18,8 @@ public class TipoEspacioBean extends AbstractDataAccess<TipoEspacio> implements 
     public EntityManager getEntityManager() {
         return em;
     }
+    
+    public TipoEspacioBean(){
+        super(TipoEspacio.class);
+    }
 }
