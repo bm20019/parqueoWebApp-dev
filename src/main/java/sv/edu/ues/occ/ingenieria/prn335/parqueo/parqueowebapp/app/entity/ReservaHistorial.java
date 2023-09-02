@@ -1,4 +1,4 @@
-package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.entity;
+package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.app.entity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,10 +18,7 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "reserva_historial", catalog = "parqueo", schema = "public")
 @NamedQueries({
-    @NamedQuery(name = "ReservaHistorial.findAll", query = "SELECT r FROM ReservaHistorial r"),
-    @NamedQuery(name = "ReservaHistorial.findByIdReservaHistorial", query = "SELECT r FROM ReservaHistorial r WHERE r.idReservaHistorial = :idReservaHistorial"),
-    @NamedQuery(name = "ReservaHistorial.findByFechaAlcanzado", query = "SELECT r FROM ReservaHistorial r WHERE r.fechaAlcanzado = :fechaAlcanzado"),
-    @NamedQuery(name = "ReservaHistorial.findByActivo", query = "SELECT r FROM ReservaHistorial r WHERE r.activo = :activo")})
+    @NamedQuery(name = "ReservaHistorial.findAll", query = "SELECT r FROM ReservaHistorial r")})
 public class ReservaHistorial implements Serializable {
 
     private static final long serialVersionUID = 1L;

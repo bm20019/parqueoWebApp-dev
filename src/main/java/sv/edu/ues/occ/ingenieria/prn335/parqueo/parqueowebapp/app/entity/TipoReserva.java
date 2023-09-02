@@ -1,4 +1,4 @@
-package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.entity;
+package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.app.entity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,15 +13,13 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tipo_reserva", catalog = "parqueo", schema = "public")
 @NamedQueries({
-    @NamedQuery(name = "TipoReserva.findAll", query = "SELECT t FROM TipoReserva t"),
-    @NamedQuery(name = "TipoReserva.findByIdTipoReserva", query = "SELECT t FROM TipoReserva t WHERE t.idTipoReserva = :idTipoReserva"),
-    @NamedQuery(name = "TipoReserva.findByNombre", query = "SELECT t FROM TipoReserva t WHERE t.nombre = :nombre"),
-    @NamedQuery(name = "TipoReserva.findByPublico", query = "SELECT t FROM TipoReserva t WHERE t.publico = :publico"),
-    @NamedQuery(name = "TipoReserva.findByDescripcion", query = "SELECT t FROM TipoReserva t WHERE t.descripcion = :descripcion")})
+    @NamedQuery(name = "TipoReserva.findAll", query = "SELECT t FROM TipoReserva t")})
 public class TipoReserva implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,6 +28,8 @@ public class TipoReserva implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_tipo_reserva")
     private Integer idTipoReserva;
+    @NotBlank(message="El nombre no puede estar en blanco")
+    @Size(min =3, max=155, message= "El nombre debe poseer de 3 a 155 caracteres")
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "publico")

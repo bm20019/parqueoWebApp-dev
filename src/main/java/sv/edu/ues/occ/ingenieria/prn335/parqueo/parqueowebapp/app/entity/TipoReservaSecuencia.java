@@ -1,4 +1,4 @@
-package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.entity;
+package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.app.entity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,10 +19,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tipo_reserva_secuencia", catalog = "parqueo", schema = "public")
 @NamedQueries({
-    @NamedQuery(name = "TipoReservaSecuencia.findAll", query = "SELECT t FROM TipoReservaSecuencia t"),
-    @NamedQuery(name = "TipoReservaSecuencia.findByIdTipoReservaSecuencia", query = "SELECT t FROM TipoReservaSecuencia t WHERE t.idTipoReservaSecuencia = :idTipoReservaSecuencia"),
-    @NamedQuery(name = "TipoReservaSecuencia.findByIndicaFin", query = "SELECT t FROM TipoReservaSecuencia t WHERE t.indicaFin = :indicaFin"),
-    @NamedQuery(name = "TipoReservaSecuencia.findByNombre", query = "SELECT t FROM TipoReservaSecuencia t WHERE t.nombre = :nombre")})
+    @NamedQuery(name = "TipoReservaSecuencia.findAll", query = "SELECT t FROM TipoReservaSecuencia t")})
 public class TipoReservaSecuencia implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.entity;
+package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.app.entity;
 
 import java.io.Serializable;
 import java.util.List;

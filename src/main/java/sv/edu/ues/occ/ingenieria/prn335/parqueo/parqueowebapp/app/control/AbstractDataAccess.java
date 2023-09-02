@@ -1,4 +1,4 @@
-package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.control;
+package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.app.control;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;

@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <style>
+            table {
+                width: 750px;
+                border-collapse: collapse;
+                margin:50px auto;
+            }
+
+            tr:nth-of-type(odd) {
+                background: #eee;
+            }
+
+            th {
+                background: #3498db;
+                color: white;
+                font-weight: bold;
+            }
+
+            td, th {
+                padding: 10px;
+                border: 1px solid #ccc;
+                text-align: left;
+                font-size: 18px;
+            }
+            @media
+            only screen and (max-width: 760px),
+            (min-device-width: 768px) and (max-device-width: 1024px)  {
+
+                table {
+                    width: 100%;
+                }
+
+                table, thead, tbody, th, td, tr {
+                    display: block;
+                }
+
+                thead tr {
+                    position: absolute;
+                    top: -9999px;
+                    left: -9999px;
+                }
+
+                tr {
+                    border: 1px solid #ccc;
+                }
+
+                td {
+                    border: none;
+                    border-bottom: 1px solid #eee;
+                    position: relative;
+                    padding-left: 50%;
+                }
+
+                td:before {
+                    position: absolute;
+                    top: 6px;
+                    left: 6px;
+                    width: 45%;
+                    padding-right: 10px;
+                    white-space: nowrap;
+                    content: attr(data-column);
+                    color: #000;
+                    font-weight: bold;
+                }
+
+            }
+        </style>
+        <h:panelGrid>
+            <h:form id="frmTabla">
+                <h:dataTable value="#{frmTipoReserva.listaRegistro}" var="r">
+                    <h:column>
+                        <f:facet name="header">
+                            ID
+                        </f:facet>
+                        <h:outputText value="#{r.idTipoReserva}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            Nombre
+                        </f:facet>
+                        <h:outputText value="#{r.nombre}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            Estado
+                        </f:facet>
+                        <h:outputText value="#{r.publico ? 'ACTIVO' : 'INACTIVO'}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">
+                            Descripcion
+                        </f:facet>
+                        <h:outputText value="#{r.descripcion}"/>
+                    </h:column>
+                    <h:column>
+                        <h:commandButton value="Seleccionar" actionListener="#{frmTipoReserva.btnSelecionarHandler}">
+                            <f:attribute name="seleccionado" value="#{r.idTipoReserva}"/>
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+
+                <h:commandButton value="NUEVO" actionListener="#{frmTipoReserva.btnNuevoHandler}" ></h:commandButton>
+            </h:form>
+            <h:panelGroup id="pnlDetalle">
+                <h:form rendered="#{not empty frmTipoReserva.registro}">
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="ID" for="txtId"/>
+                        <h:inputText id="txtId" value="#{frmTipoReserva.registro.idTipoReserva}" readonly="true" disabled="true"/>
+
+                        <h:outputLabel value="Nombre" for="txtNombre"/>
+                        <h:inputText id="txtNombre" value="#{frmTipoReserva.registro.nombre}" size="70"/>
+
+                        <h:outputLabel value="Publico" for="chkPublico"/>
+                        <h:selectBooleanCheckbox id="chkPublico" value="#{frmTipoReserva.registro.publico}"/>
+
+                        <h:outputLabel value="Descripcion" for="txtDescripcion"/>
+                        <h:inputTextarea id="txtDescripcion" value="#{frmTipoReserva.registro.descripcion}" cols="70" rows="3"/>
+                    </h:panelGrid>
+
+                    <h:commandButton value="Guardar" actionListener="#{frmTipoReserva.btnGuardarHandler}"/>
+                    <h:commandButton value="Modificar" actionListener="#{frmTipoReserva.btnModificarHandler}"/>
+                    <h:commandButton value="Eliminar" actionListener="#{frmTipoReserva.btnEliminarHandler}"/>
+                    <h:commandButton value="Cancelar" actionListener="#{frmTipoReserva.btnCancelarHandler}"/>
+                    <h:messages/>
+
+                </h:form>
+            </h:panelGroup>
+        </h:panelGrid>
+    </h:body>
+</html>

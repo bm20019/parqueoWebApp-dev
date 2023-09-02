@@ -1,4 +1,4 @@
-package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.entity;
+package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.app.entity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,11 +19,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "espacio", catalog = "parqueo", schema = "public")
 @NamedQueries({
-    @NamedQuery(name = "Espacio.findAll", query = "SELECT e FROM Espacio e"),
-    @NamedQuery(name = "Espacio.findByIdEspacio", query = "SELECT e FROM Espacio e WHERE e.idEspacio = :idEspacio"),
-    @NamedQuery(name = "Espacio.findByNombre", query = "SELECT e FROM Espacio e WHERE e.nombre = :nombre"),
-    @NamedQuery(name = "Espacio.findByObservaciones", query = "SELECT e FROM Espacio e WHERE e.observaciones = :observaciones"),
-    @NamedQuery(name = "Espacio.findByActivo", query = "SELECT e FROM Espacio e WHERE e.activo = :activo")})
+    @NamedQuery(name = "Espacio.findAll", query = "SELECT e FROM Espacio e")})
 public class Espacio implements Serializable {
 
     private static final long serialVersionUID = 1L;
