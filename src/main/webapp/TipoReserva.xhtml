@@ -2,22 +2,24 @@
 <composition xmlns="http://xmlns.jcp.org/jsf/facelets"
              template="./WEB-INF/templates/raiz.xhtml" 
              xmlns:h="http://xmlns.jcp.org/jsf/html" 
-             xmlns:f="http://xmlns.jcp.org/jsf/core"
              xmlns:p="http://primefaces.org/ui">
 
     <define name="tabla">
         <h:form id="frmTabla">
             <p:dataTable value="#{frmTipoReserva.modelo}" var="r" 
                          lazy="true" 
-                         paginator="true"
-                         rows="3"
-                         first="0"
-                         selectionMode="single"
-                         selection="#{frmTipoReserva.registro}"
+                         paginator="true" 
+                         rows="3" 
+                         first="0" 
+                         selectionMode="single" 
+                         selection="#{frmTipoReserva.registro}" 
                          rendered="#{empty frmTipoReserva.registro}"
                          >
-                
-                <p:ajax process="@this" update=":frmTabla:pnlDetalle" event="rowSelect"/>
+
+                <p:ajax process="@this" update=":pnlDetalle @form" 
+                        listener="#{frmTipoReserva.seleccionarRegistro}" 
+                        event="rowSelect" />
+
                 <p:column title="ID">
                     <h:outputText value="#{r.idTipoReserva}"/>
                 </p:column>
@@ -31,67 +33,50 @@
                     <h:outputText value="#{r.descripcion}"/>
                 </p:column>
             </p:dataTable>
-
-            <p:dataTable value="#{frmTipoReserva.modelo}" var="r">
-                <h:column>
-                    <f:facet name="header">
-                        ID
-                    </f:facet>
-                    <h:outputText value="#{r.idTipoReserva}"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        Nombre
-                    </f:facet>
-                    <h:outputText value="#{r.nombre}"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        Estado
-                    </f:facet>
-                    <h:outputText value="#{r.publico ? 'ACTIVO' : 'INACTIVO'}"/>
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">
-                        Descripcion
-                    </f:facet>
-                    <h:outputText value="#{r.descripcion}"/>
-                </h:column>
-                <h:column>
-                    <h:commandButton value="Seleccionar" actionListener="#{frmTipoReserva.btnSelecionarHandler}">
-                        <f:attribute name="seleccionado" value="#{r.idTipoReserva}"/>
-                    </h:commandButton>
-                </h:column>
-            </p:dataTable>
-
-            <h:commandButton value="NUEVO" actionListener="#{frmTipoReserva.btnNuevoHandler}" >
-                ><!-- <f:ajax execute="@this" render=":pnlDetalle" /> --> 
-            </h:commandButton>
-            <h:commandButton value="Cancelar" actionListener="#{frmTipoReserva.btnCancelarHandler}" rendered="#{not empty frmTipoReserva.registro}"/>
-
-            <h:panelGroup id="pnlDetalle">
-                <h:form rendered="#{not empty frmTipoReserva.registro}">
-                    <h:panelGrid columns="2">
-                        <p:outputLabel value="ID" for="txtId"/>
-                        <p:inputText id="txtId" value="#{frmTipoReserva.registro.idTipoReserva}" readonly="true" disabled="true"/>
-
-                        <p:outputLabel value="Nombre" for="txtNombre"/>
-                        <p:inputText id="txtNombre" value="#{frmTipoReserva.registro.nombre}" size="70"/>
-
-                        <p:outputLabel value="Publico" for="chkPublico"/>
-                        <p:selectBooleanCheckbox id="chkPublico" value="#{frmTipoReserva.registro.publico}"/>
-
-                        <p:outputLabel value="Descripcion" for="txtDescripcion"/>
-                        <p:inputTextarea id="txtDescripcion" value="#{frmTipoReserva.registro.descripcion}" cols="70" rows="3"/>
-                    </h:panelGrid>
-
-                    <h:commandButton value="Guardar" actionListener="#{frmTipoReserva.btnGuardarHandler}"/>
-                    <h:commandButton value="Modificar" actionListener="#{frmTipoReserva.btnModificarHandler}"/>
-                    <h:messages/>
-                </h:form>
-            </h:panelGroup>
+            
+            <h:panelGrid columns="2">
+                <p:commandButton value="NUEVO" 
+                                 actionListener="#{frmTipoReserva.btnNuevoHandler}"
+                                 update=":pnlDetalle @form"/>
+                <p:commandButton value="Cancelar" 
+                                 update=":pnlDetalle @form"
+                                 actionListener="#{frmTipoReserva.btnCancelarHandler}"
+                                 rendered="#{not empty frmTipoReserva.registro}"/>
+            </h:panelGrid>
         </h:form>
+    </define>
 
+    <define name="detalle">
+        <h:panelGroup id="pnlDetalle">
+            <h:form rendered="#{not empty frmTipoReserva.registro}">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="ID" for="txtId"/>
+                    <p:inputText id="txtId" value="#{frmTipoReserva.registro.idTipoReserva}" readonly="true" disabled="true"/>
+
+                    <p:outputLabel value="Nombre" for="txtNombre"/>
+                    <p:inputText id="txtNombre" value="#{frmTipoReserva.registro.nombre}" size="70"/>
+
+                    <p:outputLabel value="Publico" for="chkPublico"/>
+                    <p:selectBooleanCheckbox id="chkPublico" value="#{frmTipoReserva.registro.publico}"/>
+
+                    <p:outputLabel value="Descripcion" for="txtDescripcion"/>
+                    <p:inputTextarea id="txtDescripcion" value="#{frmTipoReserva.registro.descripcion}" cols="70" rows="3"/>
+                </h:panelGrid>
+
+                <p:commandButton value="Guardar" 
+                                 actionListener="#{frmTipoReserva.btnGuardarHandler}" 
+                                 update=":frmTabla @form"
+                                 rendered="#{frmTipoReserva.estado  == 'NUEVO'}"/>
+                <p:commandButton value="Modificar"
+                                 actionListener="#{frmTipoReserva.btnModificarHandler}" 
+                                 update=":frmTabla @form"
+                                 rendered="#{frmTipoReserva.estado  == 'MODIFICAR'}"/>
+                <p:commandButton value="Eliminar"
+                                 actionListener="#{frmTipoReserva.btnModificarHandler}" 
+                                 update=":frmTabla @form"
+                                 rendered="#{frmTipoReserva.estado  == 'MODIFICAR'}"/>
+                <h:messages/>
+            </h:form>
+        </h:panelGroup>
     </define>
 </composition>

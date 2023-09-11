@@ -48,7 +48,7 @@ public abstract class AbstractFrm<T> implements Serializable{
     public void initRegistro() {
         logger = Logger.getLogger(getClass().getName());
         try {
-            fileHandler = new FileHandler("/home/adalberto/Documentos/LogAbstractFRM.txt");
+            fileHandler = new FileHandler("/home/adalberto/Documentos/LOG/LogAbstractFRM.txt");
             SimpleFormatter formatter = new SimpleFormatter();
             fileHandler.setFormatter(formatter);
             logger.addHandler(fileHandler);
@@ -78,7 +78,7 @@ public abstract class AbstractFrm<T> implements Serializable{
                 List<T> resultado = null;
                 try {
                     trBean = getDataAccess();
-                    resultado = trBean.findRange(primero, 3);
+                    resultado = trBean.findRange(primero, tamanio);
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
 
@@ -107,6 +107,8 @@ public abstract class AbstractFrm<T> implements Serializable{
 
     public void seleccionarRegistro() {
         this.estado = EstadosCRUD.MODIFICAR;
+        System.err.println("EL ID DEL REGISTRO ES: "+registro.toString());
+        logger.log(Level.INFO,registro.toString());
     }
 
     public void btnNuevoHandler(ActionEvent ae) {
