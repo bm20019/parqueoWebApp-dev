@@ -59,7 +59,7 @@ public abstract class AbstractDataAccess<T> {
         return null;
     }
 
-    public void remove(T registro) throws IllegalArgumentException, IllegalStateException {
+    public void delete(T registro) throws IllegalArgumentException, IllegalStateException {
 
         EntityManager em = null;
         try {
@@ -125,7 +125,7 @@ public abstract class AbstractDataAccess<T> {
         throw new IllegalArgumentException();
     }
 
-    public Long count() throws IllegalStateException {
+    public int count() throws IllegalStateException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -136,7 +136,7 @@ public abstract class AbstractDataAccess<T> {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<Long> cq = cb.createQuery(Long.class);
             cq.select(cb.count(cq.from(tipoDato)));
-            return em.createQuery(cq).getSingleResult();
+            return Math.toIntExact(em.createQuery(cq).getSingleResult());
         }
         throw new IllegalStateException();
     }
