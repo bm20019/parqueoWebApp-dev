@@ -13,6 +13,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
@@ -105,7 +106,7 @@ public abstract class AbstractFrm<T> implements Serializable{
         };
     }
 
-    public void seleccionarRegistro() {
+    public void seleccionarRegistro(ActionEvent selectEvent) {
         this.estado = EstadosCRUD.MODIFICAR;
         System.err.println("EL ID DEL REGISTRO ES: "+registro.toString());
         logger.log(Level.INFO,registro.toString());
