@@ -43,9 +43,9 @@ public class FrmTipoReserva extends AbstractFrm<TipoReserva> implements Serializ
     }
 
     @Override
-    public TipoReserva getObjetoPorId(String rowKey) {
-        if (rowKey != null && this.modelo != null && this.modelo.getWrappedData() != null) {
-            return this.modelo.getWrappedData().stream().filter(r -> r.getIdTipoReserva().toString().equals(rowKey)).collect(Collectors.toList()).get(0);
+    public TipoReserva getObjetoPorId(String id) {
+        if (id != null && this.modelo.getWrappedData() != null) {
+            return this.modelo.getWrappedData().stream().filter(r -> r.getIdTipoReserva().toString().equals(id)).collect(Collectors.toList()).get(0);
         }
         return null;
     }

@@ -50,6 +50,7 @@
             <artifactId>primefaces</artifactId>
             <version>13.0.0</version>
             <classifier>jakarta</classifier>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     

@@ -2,16 +2,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" >
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
     <h:head>
-        <title>Parqueo UES</title>
-        <h:outputStylesheet library="estilos" name="tabla.css" />
+        <title>Parq-UES 1.0 </title>
+          <h:outputStylesheet library="estilos" name="tabla.css"/> 
     </h:head>
     <h:body>
-        <h1>Parqueo UES</h1>
-        <ui:insert name="tabla">
+        <p:growl/> 
+        <h1>Parq-ues 1.0</h1>
+        <h:panelGrid>
+            <h:form id="frmSeleccionarIdioma">
+                <h:selectOneMenu value="#{sesionUsuario.idiomaSeleccionado}"
+                                 valueChangeListener="#{sesionUsuario.cambiarIdioma}">
+                
+                    <f:selectItems
+                        value="#{sesionUsuario.idiomas}"
+                        var="idio"
+                        itemLabel="#{idio}"  itemValue="#{idio}"/>
+                    <f:ajax render="@all"/>
+                </h:selectOneMenu>
+                
+            </h:form>
+            
+        </h:panelGrid>
+        <ui:insert name="tabla" >
+            Aqui deberia ir una tabla  
         </ui:insert>
         <ui:insert name="detalle">
+            Aqui deberia ir detalles
+        </ui:insert>
+        
+        <ui:insert name="extras">
+            
         </ui:insert>
     </h:body>
 </html>

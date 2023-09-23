@@ -1,82 +1,90 @@
-<?xml version='1.0' encoding='UTF-8' ?>
 <composition xmlns="http://xmlns.jcp.org/jsf/facelets"
-             template="./WEB-INF/templates/raiz.xhtml" 
-             xmlns:h="http://xmlns.jcp.org/jsf/html" 
-             xmlns:p="http://primefaces.org/ui">
+             template="./WEB-INF/templates/raiz.xhtml"
+
+
+             xmlns:h="http://xmlns.jcp.org/jsf/html"
+             xmlns:f="http://xmlns.jcp.org/jsf/core"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:btnparq="jakarta.faces.composite/btnparq">
 
     <define name="tabla">
-        <h:form id="frmTabla">
-            <p:dataTable value="#{frmTipoReserva.modelo}" var="r" 
-                         lazy="true" 
-                         paginator="true" 
-                         rows="3" 
-                         first="0" 
-                         selectionMode="single" 
-                         selection="#{frmTipoReserva.registro}" 
-                         rendered="#{empty frmTipoReserva.registro}"
+        <h:form id="frmTabla" >
+            <p:dataTable value="#{frmTipoReserva.modelo}" var="r"
+                         lazy="true"
+                         paginator="true"
+                         rows="3"
+                         first="0"
+                         selectionMode="single"
+                         selection="#{frmTipoReserva.regis}"
+                         rendered="#{empty frmTipoReserva.regis}"
+
                          >
 
                 <p:ajax process="@this" update=":pnlDetalle @form" 
-                        listener="#{frmTipoReserva.seleccionarRegistro}" 
-                        event="rowSelect" />
+                        listener="#{frmTipoReserva.seleccionarRegistro}"
+                        event="rowSelect"/>
 
                 <p:column title="ID">
                     <h:outputText value="#{r.idTipoReserva}"/>
                 </p:column>
-                <p:column id="NOMBRE">
+
+                <p:column title="NOMBRE">
                     <h:outputText value="#{r.nombre}"/>
                 </p:column>
-                <p:column id="ESTADO">
-                    <h:outputText value="#{r.publico ? 'ACTIVO' : 'INACTIVO'}"/>
+
+                <p:column title="ESTADO">
+                    <h:outputText value="#{r.publico?'ACTIVO':'INACTIVO'}"/>
                 </p:column>
-                <p:column id="Descripcion">
+
+                <p:column title="DESCRIPCION">
                     <h:outputText value="#{r.descripcion}"/>
                 </p:column>
+
             </p:dataTable>
-            
-            <h:panelGrid columns="2">
-                <p:commandButton value="NUEVO" 
-                                 actionListener="#{frmTipoReserva.btnNuevoHandler}"
-                                 update=":pnlDetalle @form"/>
-                <p:commandButton value="Cancelar" 
-                                 update=":pnlDetalle @form"
-                                 actionListener="#{frmTipoReserva.btnCancelarHandler}"
-                                 rendered="#{not empty frmTipoReserva.registro}"/>
-            </h:panelGrid>
+
+            <btnparq:botonesTop bean="#{frmTipoReserva}"/>           
         </h:form>
+
     </define>
 
     <define name="detalle">
         <h:panelGroup id="pnlDetalle">
-            <h:form rendered="#{not empty frmTipoReserva.registro}">
+            <h:form rendered="#{not empty frmTipoReserva.regis}">
+
                 <h:panelGrid columns="2">
                     <p:outputLabel value="ID" for="txtId"/>
-                    <p:inputText id="txtId" value="#{frmTipoReserva.registro.idTipoReserva}" readonly="true" disabled="true"/>
+                    <p:inputText id="txtId" value="#{frmTipoReserva.regis.idTipoReserva}"
+                                 readonly="true" disabled="true"/>
 
                     <p:outputLabel value="Nombre" for="txtNombre"/>
-                    <p:inputText id="txtNombre" value="#{frmTipoReserva.registro.nombre}" size="70"/>
+                    <p:inputText id="txtNombre" value="#{frmTipoReserva.regis.nombre}" size="70"/>
 
                     <p:outputLabel value="Publico" for="chkPublico"/>
-                    <p:selectBooleanCheckbox id="chkPublico" value="#{frmTipoReserva.registro.publico}"/>
+                    <p:selectBooleanCheckbox id="chkPublico" value="#{frmTipoReserva.regis.publico}"/>
 
                     <p:outputLabel value="Descripcion" for="txtDescripcion"/>
-                    <p:inputTextarea id="txtDescripcion" value="#{frmTipoReserva.registro.descripcion}" cols="70" rows="3"/>
-                </h:panelGrid>
+                    <p:inputTextarea id="txtDescripcion" value="#{frmTipoReserva.regis.descripcion}" cols="70" rows="3"/>
 
+
+                </h:panelGrid>
                 <p:commandButton value="Guardar" 
-                                 actionListener="#{frmTipoReserva.btnGuardarHandler}" 
-                                 update=":frmTabla @form"
-                                 rendered="#{frmTipoReserva.estado  == 'NUEVO'}"/>
-                <p:commandButton value="Modificar"
-                                 actionListener="#{frmTipoReserva.btnModificarHandler}" 
-                                 update=":frmTabla @form"
-                                 rendered="#{frmTipoReserva.estado  == 'MODIFICAR'}"/>
-                <p:commandButton value="Eliminar"
-                                 actionListener="#{frmTipoReserva.btnModificarHandler}" 
-                                 update=":frmTabla @form"
-                                 rendered="#{frmTipoReserva.estado  == 'MODIFICAR'}"/>
-                <h:messages/>
+                                 actionListener="#{frmTipoReserva.btnGuardarHandler}"
+                                 update="@form :frmTabla"
+                                 rendered="#{frmTipoReserva.estado=='NUEVO'}"
+                                 />
+                <p:commandButton value="Modificar" 
+                                 rendered="#{frmTipoReserva.estado=='MODIFICAR'}"
+                                 update=":pnlDetalle :frmTabla"
+                                 actionListener="#{frmTipoReserva.btnModificarHandler}"/>
+                <p:commandButton value="Eliminar" 
+                                 rendered="#{frmTipoReserva.estado=='MODIFICAR'}"
+                                 update=":pnlDetalle :frmTabla"
+                                 actionListener="#{frmTipoReserva.btnEliminarHandler}"/>
+                <p:messages/>
             </h:form>
+
         </h:panelGroup>
+
     </define>
+
 </composition>
