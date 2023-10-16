@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form id="frmNotificar">
+            <p:remoteCommand name="actualizar" id="rmtActualizar" update="pnlLibres"/>
+            <h:panelGroup id="pnlLibres">
+                Espacios Libre <h:outputText value="#{frmNotificarEspacio.espaciosLibres}"/>
+            </h:panelGroup>
+        </h:form>
+        
+        <script>
+            var ws = new WebSocket("ws://localhost:8080/parqueoWebApp/notificar_espacio");
+            ws.onmessage=function(e){
+                console.log("Mensaje recibido", e);
+                actualizar();
+            }
+        </script>
+    </h:body>
+</html>

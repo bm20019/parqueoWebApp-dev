@@ -35,8 +35,7 @@ public class TipoEspacioResource {
     public List<TipoEspacio> finRange(
             @QueryParam(value = "fist")
             @DefaultValue(value = "0") int fist,
-            @QueryParam(value = "page_size") @DefaultValue(value = "10") int pageSize
-    ) {
+            @QueryParam(value = "page_size") @DefaultValue(value = "10") int pageSize) {
         return teBean.findRange(fist, pageSize);
     }
     
