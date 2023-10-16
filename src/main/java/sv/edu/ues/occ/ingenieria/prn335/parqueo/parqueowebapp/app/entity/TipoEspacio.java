@@ -1,5 +1,6 @@
 package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.app.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.Basic;
@@ -50,7 +51,8 @@ public class TipoEspacio implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    
+    @JsonbTransient
     public List<EspacioCaracteristica> getEspacioCaracteristicaList() {
         return espacioCaracteristicaList;
     }
