@@ -2,7 +2,6 @@ package sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.app.boundary.ws;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
@@ -15,7 +14,6 @@ import sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.app.control.Maneja
  *
  * @author adalberto
  */
-@Named
 @ApplicationScoped
 @ServerEndpoint(value="/notificar_espacio")
 public class NotificarEspacio implements Serializable{
