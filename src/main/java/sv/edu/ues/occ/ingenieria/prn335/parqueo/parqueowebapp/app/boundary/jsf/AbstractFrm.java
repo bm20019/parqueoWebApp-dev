@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
+import sv.edu.ues.occ.ingenieria.prn335.parqueo.parqueowebapp.app.entity.Area;
 
 /**
  *
@@ -93,25 +94,28 @@ public abstract class AbstractFrm<T> implements Serializable {
     public abstract String getIdPorObjeto(T object);
 
     public abstract T getObjetoPorId(String id);
-    
-     public abstract void instanciarRegistro();
-    
-     public void seleccionarRegistro() {
+
+    public abstract void instanciarRegistro();
+
+    public void seleccionarRegistro() {
         this.estado = EstadosCRUD.MODIFICAR;
 
     }
-       public void btnNuevoHandler(ActionEvent ae) {
+
+    public void btnNuevoHandler(ActionEvent ae) {
         this.instanciarRegistro();
         this.estado = EstadosCRUD.NUEVO;
-}
-         public void btnCancelarHandler(ActionEvent ae) {
+    }
+
+    public void btnCancelarHandler(ActionEvent ae) {
         this.registro = null;
         this.estado = EstadosCRUD.NINGUNO;
     }
-          public void btnModificarHandler(ActionEvent ae) {
+
+    public void btnModificarHandler(ActionEvent ae) {
         T modify = null;
         try {
-           AbstractDataAccess<T> trBean = getDataAccess();
+            AbstractDataAccess<T> trBean = getDataAccess();
             modify = trBean.modify(registro);
         } catch (Exception ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
@@ -126,13 +130,14 @@ public abstract class AbstractFrm<T> implements Serializable {
         }
         //TODO:notificar que no se cambio
     }
-           public void btnEliminarHandler(ActionEvent ae) {
+
+    public void btnEliminarHandler(ActionEvent ae) {
         try {
             AbstractDataAccess<T> trBean = getDataAccess();
-        
+
             trBean.delete(registro);
             this.estado = EstadosCRUD.NINGUNO;
-            this.registro=null;
+            this.registro = null;
             return;
             //TODO: enviar mensaje de exito
         } catch (Exception ex) {
@@ -141,28 +146,35 @@ public abstract class AbstractFrm<T> implements Serializable {
 
         //TODO:notificar que no se elimino
     }
-            public void btnGuardarHandler(ActionEvent ae) {
-        FacesMessage mensaje=null;
-        
+
+    public void btnGuardarHandler(ActionEvent ae) {
+        FacesMessage mensaje = null;
+
         try {
-             AbstractDataAccess<T> trBean = getDataAccess();
+            AbstractDataAccess<T> trBean = getDataAccess();
             trBean.create(registro);
             this.estado = EstadosCRUD.NINGUNO;
-          mensaje=new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro guardado con exito", "Se creo el registrotro");
-          getFacesContext().addMessage(null, mensaje);
-          return;
-          
-          
+            mensaje = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro guardado con exito", "Se creo el registrotro");
+            getFacesContext().addMessage(null, mensaje);
+            return;
+
         } catch (Exception ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
-        mensaje=new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo guardar el registrotro", "no se creo el registrotro");
-          getFacesContext().addMessage(null, mensaje);
+        mensaje = new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se pudo guardar el registrotro", "no se creo el registrotro");
+        getFacesContext().addMessage(null, mensaje);
 
         this.registro = null;
 
     }
- public T getRegis() {
+    
+     public void onRowEdit(RowEditEvent<T> event) {
+        FacesMessage msg = new FacesMessage("Area Editada", String.valueOf(event.getObject().toString()));
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        this.getDataAccess().modify(event.getObject());
+    }
+
+    public T getRegis() {
         return registro;
     }
 
@@ -178,4 +190,4 @@ public abstract class AbstractFrm<T> implements Serializable {
         return estado;
     }
 
- }
+}

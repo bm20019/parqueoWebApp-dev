@@ -120,7 +120,7 @@ public class Area implements Serializable {
 
     @Override
     public String toString() {
-        return "sv.edu.ues.occ.ingenieria.prn335.parqueo.entityproyect.Area[ idArea=" + idArea + " ]";
+        return "[ idArea=" + idArea + " ]";
     }
     
 }

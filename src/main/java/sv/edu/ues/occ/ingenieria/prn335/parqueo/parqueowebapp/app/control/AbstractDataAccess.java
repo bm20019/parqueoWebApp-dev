@@ -28,7 +28,7 @@ public abstract class AbstractDataAccess<T> {
             } catch (Exception ex) {
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
-            
+
             if (em != null) {
                 em.persist(registro);
                 return;
@@ -71,13 +71,16 @@ public abstract class AbstractDataAccess<T> {
         if (registro != null) {
             if (em != null) {
                 try {
+                    if (!em.contains(registro)) {
+                        registro = em.merge(registro);
+                    }
                     em.remove(registro);
                     return;
                 } catch (Exception ex) {
                     Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
-            throw new IllegalStateException();
+            throw new IllegalStateException("No se pudo Remover el registro: [" + registro.toString() + "]");
         }
         throw new IllegalArgumentException();
     }

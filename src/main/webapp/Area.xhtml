@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:jh="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:head>
+        <title>Area Admin</title>
+    </h:head>
+    <h:body>
+        <style>
+            .product-list-action {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+            }
+
+            body .ui-datatable .ui-datatable-header {
+                text-align:center;
+            }
+        </style>
+        <define name="tabla" id="tabla">
+            <div class="parqueo">
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{frmArea.btnNuevoHandler}"
+                                         update=":dialogs:guardar-area" oncomplete="PF('creadorArea').show()"
+                                         styleClass="ui-button-success" style="margin-right: .5rem">
+                            <p:resetInput target=":dialogs:guardar-area" />
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <!-- VER AREAS -->
+                <h:form id="content">
+                    <p:growl for="content" id="msgs" showDetail="true"/>
+                    <p:dataTable id="dtAreas" var="area" value="#{frmArea.modelo}"
+                                 rowKey="#{area.idArea}" lazy="true" first="0"
+                                 paginator="true" rows="3" editable="true">
+                        
+                        <p:ajax event="rowEdit" listener="#{frmArea.onRowEdit}" update=":content:msgs"/>
+                        
+                        <f:facet name="header">
+                            Areas de parqueo disponibles.
+                        </f:facet>
+                        <p:column style="width:2rem">
+                            <p:rowToggler/>
+                        </p:column>
+                        
+                        <p:column headerText="ID">
+                           <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{area.idArea}"/>
+                                </f:facet>
+                               <f:facet name="input">
+                                    <h:outputText value="#{area.idArea}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Nombre">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{area.nombre}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{area.nombre}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Descripcion">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{area.descripcion}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{area.descripcion}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Editar" >
+                            <p:rowEditor editTitle="Editar Area" cancelTitle="Cancelar Edicion" saveTitle="Guardar Cambios"/>
+                        </p:column>
+                        <p:column headerText="">
+                            <!-- Boton para eliminar Area -->
+                            <p:commandButton id="eliminar-area"
+                                             value="Eliminar"
+                                             styleClass="ui-button-danger"
+                                             icon="pi pi-trash"
+                                             update="@this"
+                                             oncomplete="PF('deleteDialog').show()" actionListener="#{frmArea.seleccionarRegistro}">
+                                <f:setPropertyActionListener value="#{area}" target="#{frmArea.regis}"/>
+                            </p:commandButton>
+                        </p:column>
+
+                        <p:rowExpansion>
+                            <p:dataTable var="espacio" value="#{area.espacioList}">
+                                <f:facet name="header">
+                                    <h:outputText value="Espacios Disponibles"/>
+                                </f:facet>
+                                <p:column headerText="ID" >
+                                    <h:outputText value="#{espacio.idEspacio}" />
+                                </p:column>
+
+                                <p:column headerText="Nombre">
+                                    <h:outputText value="#{espacio.nombre}" />
+                                </p:column>
+
+                                <p:column headerText="Observaciones">
+                                    <h:outputText value="#{espacio.observaciones}" />
+                                </p:column>
+
+                                <p:column style="width:3rem;text-align: center">
+                                    <p:commandButton icon="pi pi-search" title="View" actionListener="#{frmArea.seleccionarRegistro}">
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </p:rowExpansion>
+                    </p:dataTable>
+                </h:form>
+
+                <h:form id="dialogs">
+                    <!-- Formulario para agregar una nueva area a la base de datos -->
+                    <p:dialog header="Agregar Area" showEffect="fade" modal="true" widgetVar="creadorArea"
+                              responsive="true">
+                        <p:outputPanel id="guardar-area" class="ui-fluid">
+                            <p:outputPanel>
+                                <div class="field">
+                                    <p:outputLabel for="name">Nombre</p:outputLabel>
+                                    <p:inputText id="name" value="#{frmArea.regis.nombre}" required="true" />
+                                </div>
+                                <div class="field">
+                                    <p:outputLabel for="description">Description</p:outputLabel>
+                                    <p:inputTextarea id="description" value="#{frmArea.regis.descripcion}" />
+                                </div>
+                            </p:outputPanel>
+                        </p:outputPanel>
+
+                        <f:facet name="footer">
+                            <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{frmArea.btnGuardarHandler}"
+                                             update="@form :content" process=":content @form"/>
+                            <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('creadorArea').hide()"
+                                             class="ui-button-secondary" type="button" />
+                        </f:facet>
+                    </p:dialog>
+
+                    <!-- Dialogo de confirmacion para eliminar el registro -->
+                    <p:confirmDialog widgetVar="deleteDialog" showEffect="fade" width="300"
+                                     message="Desear eliminar el Area" header="Confirm" severity="warn">
+                        <p:commandButton value="Si" icon="pi pi-check" actionListener="#{frmArea.btnEliminarHandler}"
+                                         process="@this" update=":content"
+                                         oncomplete="PF('deleteDialog').hide()" />
+                        <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                         onclick="PF('deleteDialog').hide()" />
+                    </p:confirmDialog>
+
+                    <!-- Formulario para editar un registro -->
+                    <p:dialog header="Modificador Area" showEffect="fade" modal="true" widgetVar="modificarArea"
+                              responsive="true">
+                        <p:outputPanel id="modificar-area" class="ui-fluid">
+                            <p:outputPanel rendered="#{not empty frmArea.regis}">
+                                <div class="field">
+                                    <p:outputLabel for="name">Nombre</p:outputLabel>
+                                    <p:inputText id="nameModificar" value="#{frmArea.regis.nombre}" required="true" />
+                                </div>
+                                <div class="field">
+                                    <p:outputLabel for="description">Description</p:outputLabel>
+                                    <p:inputTextarea id="descriptionModificar" value="#{frmArea.regis.descripcion}" required="true" />
+                                </div>
+                            </p:outputPanel>
+                        </p:outputPanel>
+
+                        <f:facet name="footer">
+                            <p:commandButton value="Modificar" icon="pi pi-check" actionListener="#{frmArea.btnModificarHandler}"
+                                             update="@form :content" process=":content @form" disabled="#{empty frmArea.regis}"/>
+                            <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('modificarArea').hide()"
+                                             class="ui-button-secondary" type="button" />
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+            </div>
+        </define>
+    </h:body>
+</html>
